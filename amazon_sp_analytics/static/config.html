@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亚马逊SP API - 配置管理控制台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .required::after {
+            content: '*';
+            color: #dc3545;
+            margin-left: 4px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .store-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .store-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .store-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .store-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .store-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .store-status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-enabled {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-disabled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .store-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .store-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .marketplace-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .marketplace-tag {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #495057;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .store-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+
+        .help-text {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 亚马逊SP API配置管理控制台</h1>
+            <p>可视化管理您的亚马逊卖家API配置 - 无需手动编辑配置文件</p>
+        </div>
+
+        <div class="main-card">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('stores')">
+                    📋 店铺列表
+                </div>
+                <div class="tab" onclick="switchTab('add')">
+                    ➕ 添加店铺
+                </div>
+                <div class="tab" onclick="switchTab('test')">
+                    🔍 测试配置
+                </div>
+            </div>
+
+            <!-- 店铺列表标签页 -->
+            <div id="stores-tab" class="tab-content active">
+                <div id="alert-container"></div>
+                <div id="stores-container" class="loading">
+                    <div class="spinner"></div>
+                    <p>正在加载店铺配置...</p>
+                </div>
+            </div>
+
+            <!-- 添加店铺标签页 -->
+            <div id="add-tab" class="tab-content">
+                <form id="add-store-form">
+                    <div class="form-group">
+                        <label class="required">店铺ID</label>
+                        <input type="text" name="store_id" required placeholder="例如: store_001">
+                        <div class="help-text">唯一标识符，用于区分不同店铺</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">店铺名称</label>
+                        <input type="text" name="store_name" required placeholder="例如: 美国主店铺">
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="required">Client ID</label>
+                            <input type="text" name="client_id" required placeholder="LWA应用的Client ID">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Client Secret</label>
+                            <input type="password" name="client_secret" required placeholder="LWA应用的Client Secret">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Refresh Token</label>
+                        <input type="text" name="refresh_token" required placeholder="卖家授权的Refresh Token">
+                        <div class="help-text">从卖家中心授权获取的刷新令牌</div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="required">区域</label>
+                            <select name="region" required>
+                                <option value="">请选择区域</option>
+                                <option value="NA">北美 (NA)</option>
+                                <option value="EU">欧洲 (EU)</option>
+                                <option value="FE">远东 (FE)</option>
+                                <option value="SANDBOX">沙箱环境 (SANDBOX)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Marketplace IDs</label>
+                            <input type="text" name="marketplace_ids" placeholder="多个ID用逗号分隔">
+                            <div class="help-text">例如: ATVPDKIKX0DER (美国)</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="enabled" checked> 启用此店铺
+                        </label>
+                    </div>
+
+                    <details style="margin-bottom: 20px;">
+                        <summary style="cursor: pointer; font-weight: 600; margin-bottom: 15px;">🔧 AWS高级配置（可选）</summary>
+                        
+                        <div class="grid-2" style="margin-top: 15px;">
+                            <div class="form-group">
+                                <label>AWS Access Key</label>
+                                <input type="text" name="aws_access_key" placeholder="AWS访问密钥">
+                            </div>
+
+                            <div class="form-group">
+                                <label>AWS Secret Key</label>
+                                <input type="password" name="aws_secret_key" placeholder="AWS密钥">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>IAM Role ARN</label>
+                            <input type="text" name="role_arn" placeholder="arn:aws:iam::...">
+                        </div>
+                    </details>
+
+                    <button type="submit" class="btn btn-success">
+                        ✅ 保存配置
+                    </button>
+                </form>
+            </div>
+
+            <!-- 测试配置标签页 -->
+            <div id="test-tab" class="tab-content">
+                <div class="alert alert-info">
+                    💡 在保存配置前，可以先测试API凭证是否有效
+                </div>
+
+                <form id="test-config-form">
+                    <div class="form-group">
+                        <label class="required">Client ID</label>
+                        <input type="text" name="client_id" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Client Secret</label>
+                        <input type="password" name="client_secret" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Refresh Token</label>
+                        <input type="text" name="refresh_token" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">区域</label>
+                        <select name="region" required>
+                            <option value="">请选择区域</option>
+                            <option value="NA">北美 (NA)</option>
+                            <option value="EU">欧洲 (EU)</option>
+                            <option value="FE">远东 (FE)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        🔍 测试配置
+                    </button>
+                </form>
+
+                <div id="test-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑模态框 -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>编辑店铺配置</h2>
+            </div>
+            <form id="edit-store-form">
+                <input type="hidden" name="store_id">
+                
+                <div class="form-group">
+                    <label>店铺名称</label>
+                    <input type="text" name="store_name">
+                </div>
+
+                <div class="form-group">
+                    <label>Client ID</label>
+                    <input type="text" name="client_id">
+                </div>
+
+                <div class="form-group">
+                    <label>Client Secret</label>
+                    <input type="password" name="client_secret" placeholder="留空则不修改">
+                </div>
+
+                <div class="form-group">
+                    <label>Refresh Token</label>
+                    <input type="text" name="refresh_token">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="enabled"> 启用此店铺
+                    </label>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">取消</button>
+                    <button type="submit" class="btn btn-success">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // API基础URL
+        const API_BASE = '/api';
+
+        // 切换标签页
+        function switchTab(tabName) {
+            // 移除所有active类
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 添加active类到当前标签
+            event.target.classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // 如果是店铺列表，刷新数据
+            if (tabName === 'stores') {
+                loadStores();
+            }
+        }
+
+        // 显示提示消息
+        function showAlert(message, type = 'success') {
+            const container = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            container.innerHTML = '';
+            container.appendChild(alert);
+
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+
+        // 加载店铺列表
+        async function loadStores() {
+            const container = document.getElementById('stores-container');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>正在加载店铺配置...</p></div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/config/stores`);
+                const stores = await response.json();
+
+                if (stores.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📦</div>
+                            <h3>还没有配置店铺</h3>
+                            <p>点击"添加店铺"标签开始配置您的第一个店铺</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '<div class="store-list"></div>';
+                const storeList = container.querySelector('.store-list');
+
+                stores.forEach(store => {
+                    const storeCard = createStoreCard(store);
+                    storeList.appendChild(storeCard);
+                });
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="alert alert-error">
+                        加载店铺配置失败: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // 创建店铺卡片
+        function createStoreCard(store) {
+            const card = document.createElement('div');
+            card.className = 'store-card';
+            
+            const marketplaces = store.marketplace_ids.length > 0 
+                ? store.marketplace_ids.map(id => `<span class="marketplace-tag">${id}</span>`).join('')
+                : '<span class="info-value">未配置</span>';
+
+            card.innerHTML = `
+                <div class="store-header">
+                    <div class="store-name">${store.store_name}</div>
+                    <div class="store-status ${store.enabled ? 'status-enabled' : 'status-disabled'}">
+                        ${store.enabled ? '✅ 已启用' : '⛔ 已禁用'}
+                    </div>
+                </div>
+                <div class="store-info">
+                    <div class="info-item">
+                        <div class="info-label">店铺ID</div>
+                        <div class="info-value">${store.store_id}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">区域</div>
+                        <div class="info-value">${store.region}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Client ID</div>
+                        <div class="info-value">${store.client_id.substring(0, 20)}...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">AWS凭证</div>
+                        <div class="info-value">${store.has_aws_credentials ? '✅ 已配置' : '❌ 未配置'}</div>
+                    </div>
+                </div>
+                <div class="info-item" style="margin-top: 10px;">
+                    <div class="info-label">Marketplace IDs</div>
+                    <div class="marketplace-tags">${marketplaces}</div>
+                </div>
+                <div class="store-actions">
+                    <button class="btn btn-primary" onclick="editStore('${store.store_id}')">
+                        ✏️ 编辑
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteStore('${store.store_id}', '${store.store_name}')">
+                        🗑️ 删除
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // 编辑店铺
+        async function editStore(storeId) {
+            try {
+                const response = await fetch(`${API_BASE}/config/stores/${storeId}`);
+                const store = await response.json();
+
+                const form = document.getElementById('edit-store-form');
+                form.store_id.value = store.store_id;
+                form.store_name.value = store.store_name;
+                form.client_id.value = store.client_id;
+                form.refresh_token.value = '';
+                form.enabled.checked = store.enabled;
+
+                document.getElementById('edit-modal').classList.add('active');
+            } catch (error) {
+                showAlert(`加载店铺配置失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 关闭编辑模态框
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+        }
+
+        // 删除店铺
+        async function deleteStore(storeId, storeName) {
+            if (!confirm(`确定要删除店铺"${storeName}"吗？\n\n此操作无法撤销！`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/config/stores/${storeId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showAlert('店铺配置已删除', 'success');
+                    loadStores();
+                } else {
+                    const error = await response.json();
+                    showAlert(`删除失败: ${error.detail}`, 'error');
+                }
+            } catch (error) {
+                showAlert(`删除失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 处理添加店铺表单提交
+        document.getElementById('add-store-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {
+                store_id: formData.get('store_id'),
+                store_name: formData.get('store_name'),
+                client_id: formData.get('client_id'),
+                client_secret: formData.get('client_secret'),
+                refresh_token: formData.get('refresh_token'),
+                region: formData.get('region'),
+                marketplace_ids: formData.get('marketplace_ids')
+                    ? formData.get('marketplace_ids').split(',').map(s => s.trim()).filter(s => s)
+                    : [],
+                aws_access_key: formData.get('aws_access_key') || null,
+                aws_secret_key: formData.get('aws_secret_key') || null,
+                role_arn: formData.get('role_arn') || null,
+                enabled: formData.get('enabled') === 'on'
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/config/stores`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showAlert('店铺配置添加成功！', 'success');
+                    e.target.reset();
+                    switchTab('stores');
+                    document.querySelectorAll('.tab')[0].click();
+                } else {
+                    const error = await response.json();
+                    showAlert(`添加失败: ${error.detail}`, 'error');
+                }
+            } catch (error) {
+                showAlert(`添加失败: ${error.message}`, 'error');
+            }
+        });
+
+        // 处理编辑店铺表单提交
+        document.getElementById('edit-store-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const storeId = formData.get('store_id');
+            const data = {
+                store_name: formData.get('store_name') || undefined,
+                client_id: formData.get('client_id') || undefined,
+                refresh_token: formData.get('refresh_token') || undefined,
+                enabled: formData.get('enabled') === 'on'
+            };
+
+            // 只发送client_secret如果有值
+            const clientSecret = formData.get('client_secret');
+            if (clientSecret) {
+                data.client_secret = clientSecret;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/config/stores/${storeId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showAlert('店铺配置更新成功！', 'success');
+                    closeEditModal();
+                    loadStores();
+                } else {
+                    const error = await response.json();
+                    showAlert(`更新失败: ${error.detail}`, 'error');
+                }
+            } catch (error) {
+                showAlert(`更新失败: ${error.message}`, 'error');
+            }
+        });
+
+        // 处理测试配置表单提交
+        document.getElementById('test-config-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>正在测试配置...</p></div>';
+
+            const formData = new FormData(e.target);
+            const data = {
+                client_id: formData.get('client_id'),
+                client_secret: formData.get('client_secret'),
+                refresh_token: formData.get('refresh_token'),
+                region: formData.get('region')
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/config/test`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-success" style="margin-top: 20px;">
+                            ✅ ${result.message}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-error" style="margin-top: 20px;">
+                            ❌ ${result.message}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-error" style="margin-top: 20px;">
+                        ❌ 测试失败: ${error.message}
+                    </div>
+                `;
+            }
+        });
+
+        // 页面加载时自动加载店铺列表
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStores();
+        });
+
+        // 点击模态框外部关闭
+        document.getElementById('edit-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'edit-modal') {
+                closeEditModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+global:
+  redis_host: localhost
+  redis_port: 6379
+  redis_db: 0
+  redis_password: null
+  database_url: sqlite:///sp_api_analytics.db
+  log_level: INFO
+  log_file: logs/sp_api_analytics.log
+
+stores:
+  # 示例店铺配置 - 美国店铺
+  - store_id: store_us_001
+    store_name: 美国主店铺
+    client_id: amzn1.application-oa2-client.YOUR_CLIENT_ID
+    client_secret: YOUR_CLIENT_SECRET
+    refresh_token: Atzr|YOUR_REFRESH_TOKEN
+    region: NA
+    marketplace_ids:
+      - ATVPDKIKX0DER  # 美国
+    aws_access_key: null
+    aws_secret_key: null
+    role_arn: null
+    enabled: true
+
+  # 示例店铺配置 - 欧洲店铺
+  - store_id: store_eu_001
+    store_name: 欧洲店铺
+    client_id: amzn1.application-oa2-client.YOUR_CLIENT_ID
+    client_secret: YOUR_CLIENT_SECRET
+    refresh_token: Atzr|YOUR_REFRESH_TOKEN
+    region: EU
+    marketplace_ids:
+      - A1F83G8C2ARO7P  # 英国
+      - A1PA6795UKMFR9  # 德国
+      - A13V1IB3VIYZZH  # 法国
+    aws_access_key: null
+    aws_secret_key: null
+    role_arn: null
+    enabled: true
+
+  # 示例店铺配置 - 日本店铺
+  - store_id: store_jp_001
+    store_name: 日本店铺
+    client_id: amzn1.application-oa2-client.YOUR_CLIENT_ID
+    client_secret: YOUR_CLIENT_SECRET
+    refresh_token: Atzr|YOUR_REFRESH_TOKEN
+    region: FE
+    marketplace_ids:
+      - A1VC38T7YXB528  # 日本
+    aws_access_key: null
+    aws_secret_key: null
+    role_arn: null
+    enabled: true

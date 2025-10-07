@@ -1,0 +1,142 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║     亚马逊SP API数据分析系统 - 安装说明                        ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+📌 系统要求
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Python 3.7 或更高版本
+- MySQL 5.7+ 或 8.0+
+- pip (Python包管理器)
+- 亚马逊卖家账号和SP API开发者凭证
+
+🚀 安装步骤
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+第1步：安装MySQL数据库
+────────────────────────────────────────────────────
+
+Ubuntu/Debian:
+  sudo apt-get update
+  sudo apt-get install mysql-server
+
+Mac:
+  brew install mysql
+  brew services start mysql
+
+Windows:
+  下载安装: https://dev.mysql.com/downloads/mysql/
+
+
+第2步：创建数据库
+────────────────────────────────────────────────────
+
+登录MySQL:
+  mysql -u root -p
+
+执行命令:
+  CREATE DATABASE amazon_sp CHARACTER SET utf8mb4;
+  CREATE USER 'amazon_user'@'localhost' IDENTIFIED BY '你的密码';
+  GRANT ALL PRIVILEGES ON amazon_sp.* TO 'amazon_user'@'localhost';
+  FLUSH PRIVILEGES;
+  EXIT;
+
+
+第3步：安装Python依赖
+────────────────────────────────────────────────────
+
+进入项目目录:
+  cd amazon_sp_api_system
+
+安装依赖:
+  pip install -r requirements.txt
+
+如果遇到权限问题:
+  pip install --user -r requirements.txt
+
+
+第4步：启动系统
+────────────────────────────────────────────────────
+
+Linux/Mac:
+  chmod +x start.sh
+  ./start.sh
+
+Windows:
+  start.bat
+
+手动启动:
+  python main.py
+
+
+第5步：访问Web界面
+────────────────────────────────────────────────────
+
+打开浏览器访问:
+  http://localhost:8000
+
+在界面中添加您的亚马逊店铺API配置
+
+
+⚙️ 验证安装
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+检查Python版本:
+  python --version
+  (应该是 3.7 或更高)
+
+检查MySQL连接:
+  mysql -u amazon_user -p
+  (输入密码后能成功登录)
+
+检查依赖是否安装:
+  pip list | grep fastapi
+  pip list | grep sqlalchemy
+  pip list | grep pymysql
+
+
+🔧 常见问题
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+问题1: 无法连接MySQL
+解决: 检查MySQL服务是否运行
+  Linux: sudo systemctl status mysql
+  Mac: brew services list
+  Windows: 服务管理器中查看
+
+问题2: pip安装依赖失败
+解决: 使用国内镜像源
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+
+问题3: 端口8000被占用
+解决: 修改main.py中的端口号
+  uvicorn.run(app, host="0.0.0.0", port=8888)
+
+问题4: Python版本太低
+解决: 安装Python 3.7+
+  Ubuntu: sudo apt-get install python3.8
+  Mac: brew install python@3.8
+  Windows: 从python.org下载安装
+
+
+📚 下一步
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 阅读 "快速开始.md" 了解如何配置店铺
+2. 阅读 "中文使用指南.md" 了解完整功能
+3. 运行 "examples/使用Reports_API示例.py" 查看代码示例
+4. 访问 http://localhost:8000/docs 查看API文档
+
+
+🎉 安装完成
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+如果您看到Web界面，说明安装成功！
+
+现在可以开始添加您的亚马逊店铺配置了。
+
+祝使用愉快！ 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+版本: 1.0.0  |  更新: 2025-10-07
