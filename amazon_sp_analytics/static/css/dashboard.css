@@ -1,0 +1,54 @@
+/* 仪表板样式 */
+body {
+    background-color: #f5f5f5;
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.card-body h2 {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.card-body small {
+    font-size: 0.85rem;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#last-update {
+    font-size: 0.9rem;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.list-group-item {
+    border-left: 4px solid #007bff;
+}
+
+.list-group-item.alert-warning {
+    border-left-color: #ffc107;
+}
+
+.list-group-item.alert-danger {
+    border-left-color: #dc3545;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 0.35em 0.65em;
+}

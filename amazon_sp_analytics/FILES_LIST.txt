@@ -1,0 +1,53 @@
+amazon_sp_analytics/ - 项目根目录
+├── app/ - 应用核心代码
+│   ├── __init__.py
+│   ├── analytics/ - SP API分析模块
+│   │   ├── __init__.py
+│   │   ├── orders_analytics.py - 订单分析
+│   │   ├── sales_analytics.py - 销售分析
+│   │   └── finance_analytics.py - 财务分析
+│   ├── cache/ - 缓存模块
+│   │   ├── __init__.py
+│   │   └── redis_cache.py - Redis缓存
+│   ├── config/ - 配置模块
+│   │   ├── __init__.py
+│   │   └── sp_api_config.py - 配置管理
+│   ├── core/ - SP API核心
+│   │   ├── __init__.py
+│   │   └── sp_client.py - SP API客户端
+│   ├── models/ - 数据库模型
+│   │   ├── __init__.py
+│   │   └── database.py - 按年月分表设计
+│   ├── services/ - 业务服务
+│   │   ├── __init__.py
+│   │   └── data_storage.py - 数据存储
+│   └── utils/ - 工具模块
+│       ├── __init__.py
+│       └── monitor.py - 实时监控
+├── static/ - 静态文件
+│   ├── css/
+│   │   └── dashboard.css
+│   └── js/
+│       └── dashboard.js
+├── templates/ - HTML模板
+│   └── index.html - 主页面
+├── scripts/ - 脚本工具
+│   └── init_database.py - 数据库初始化
+├── logs/ - 日志目录
+├── main.py - 主程序入口
+├── requirements.txt - Python依赖
+├── config.yaml.example - 配置模板
+├── .env.example - 环境变量模板
+├── deploy.sh - 部署脚本
+├── start.sh - 启动脚本
+├── README.md - 使用文档
+├── DEPLOYMENT_GUIDE.md - 部署指南
+├── PROJECT_SUMMARY.md - 项目总结
+├── QUICK_START.md - 快速开始
+└── FILES_LIST.txt - 本文件
+
+总计: 30个文件
+Python文件: 19个
+配置文件: 3个
+脚本文件: 3个
+文档文件: 5个

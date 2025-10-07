@@ -1,0 +1,39 @@
+# Web框架
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+jinja2>=3.1.2
+python-multipart>=0.0.6
+
+# 数据库
+sqlalchemy>=2.0.0
+pymysql>=1.1.0
+cryptography>=41.0.0  # PyMySQL依赖
+
+# SP API核心依赖
+requests>=2.31.0
+backoff>=2.2.1
+python-dotenv>=1.0.0
+
+# 数据处理
+pandas>=2.0.0
+numpy>=1.24.0
+
+# 缓存
+redis>=4.5.0
+
+# 日志
+loguru>=0.7.0
+
+# 配置管理
+pydantic>=2.0.0
+pyyaml>=6.0
+
+# 时间处理
+python-dateutil>=2.8.2
+pytz>=2023.3
+
+# 异步支持
+aiohttp>=3.9.0
+
+# AWS支持（可选）
+boto3>=1.28.0

@@ -1,0 +1,40 @@
+# 全局配置
+global:
+  # Redis配置
+  redis_host: localhost
+  redis_port: 6379
+  redis_db: 0
+  redis_password: null
+  
+  # 数据库配置
+  database_url: mysql+pymysql://root:password@localhost/sp_analytics?charset=utf8mb4
+  
+  # 日志配置
+  log_level: INFO
+  log_file: logs/sp_api_analytics.log
+
+# 店铺配置
+stores:
+  - store_id: store_001
+    store_name: 美国主店铺
+    client_id: amzn1.application-oa2-client.xxxxxx
+    client_secret: xxxxxx
+    refresh_token: Atzr|IwEBIxxxxxx
+    region: NA  # NA, EU, FE
+    marketplace_ids:
+      - ATVPDKIKX0DER  # 美国
+    enabled: true
+    
+  - store_id: store_002
+    store_name: 欧洲店铺
+    client_id: amzn1.application-oa2-client.xxxxxx
+    client_secret: xxxxxx
+    refresh_token: Atzr|IwEBIxxxxxx
+    region: EU
+    marketplace_ids:
+      - A1F83G8C2ARO7P  # 英国
+      - A1PA6795UKMFR9  # 德国
+      - A13V1IB3VIYZZH  # 法国
+    enabled: true
+
+# 更多店铺...（可以添加100+个店铺）

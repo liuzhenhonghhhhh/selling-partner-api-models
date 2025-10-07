@@ -1,5 +1,6 @@
-"""API模块"""
-from .routes import api_router, init_db_manager
-from . import schemas
+"""API模块 - 暂未实现完整API，可后续扩展"""
 
-__all__ = ['api_router', 'init_db_manager', 'schemas']
+# 简化版 - 主要通过监控系统自动保存数据到数据库
+# 前端通过直接查询数据库或未来扩展RESTful API
+
+__all__ = []
