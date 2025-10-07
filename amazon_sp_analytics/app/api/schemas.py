@@ -176,3 +176,62 @@ class DashboardOverview(BaseModel):
     order_trend: List[OrderTrend]
     sales_trend: List[SalesTrend]
     profit_trend: List[ProfitTrend]
+
+
+# ============= 配置管理 =============
+
+class StoreCredentialsCreate(BaseModel):
+    """创建店铺凭证"""
+    store_id: str = Field(..., description="店铺唯一标识")
+    store_name: str = Field(..., description="店铺名称")
+    client_id: str = Field(..., description="LWA Client ID")
+    client_secret: str = Field(..., description="LWA Client Secret")
+    refresh_token: str = Field(..., description="刷新令牌")
+    region: str = Field(..., description="区域 (NA/EU/FE)")
+    marketplace_ids: List[str] = Field(default_factory=list, description="市场ID列表")
+    aws_access_key: Optional[str] = Field(None, description="AWS访问密钥")
+    aws_secret_key: Optional[str] = Field(None, description="AWS密钥")
+    role_arn: Optional[str] = Field(None, description="IAM角色ARN")
+    enabled: bool = Field(default=True, description="是否启用")
+
+
+class StoreCredentialsUpdate(BaseModel):
+    """更新店铺凭证"""
+    store_name: Optional[str] = None
+    client_id: Optional[str] = None
+    client_secret: Optional[str] = None
+    refresh_token: Optional[str] = None
+    region: Optional[str] = None
+    marketplace_ids: Optional[List[str]] = None
+    aws_access_key: Optional[str] = None
+    aws_secret_key: Optional[str] = None
+    role_arn: Optional[str] = None
+    enabled: Optional[bool] = None
+
+
+class StoreCredentialsResponse(BaseModel):
+    """店铺凭证响应"""
+    store_id: str
+    store_name: str
+    client_id: str
+    region: str
+    marketplace_ids: List[str]
+    enabled: bool
+    has_aws_credentials: bool = False
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+
+class ConfigTestRequest(BaseModel):
+    """配置测试请求"""
+    client_id: str
+    client_secret: str
+    refresh_token: str
+    region: str
+
+
+class ConfigTestResponse(BaseModel):
+    """配置测试响应"""
+    success: bool
+    message: str
+    details: Optional[Dict[str, Any]] = None
